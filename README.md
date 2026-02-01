@@ -9,7 +9,7 @@ querying of ge prices, as well as the uploading and maintenance of GE submission
 The health endpoint is a heartbeat endpoint, allowing verification that the server
 is up
 
-Endpoint
+Example Endpoint
 ```
 GET <api_endpoint>/api/health
 ```
@@ -28,7 +28,7 @@ Example Response
 
 This endpoint returns information about all bosses
 
-Endpoint
+Example Endpoint
 
 ```
 GET <api_endpoint>/api/bosses/all
@@ -58,7 +58,7 @@ Example Response
 
 This endpoint returns the information about a specific boss
 
-Endpoint
+Example Endpoint
 
 ```
 GET <api_endpoint>/api/bosses/1
@@ -85,3 +85,71 @@ Error Response
 ### Submissions
 
 ### Items
+
+#### Item Information
+
+This endpoint returns the information about a specific item, with
+optional query parameters to handle paging (default page=0, pageSize=20)
+
+Example Endpoint
+
+``` 
+<api_endpoint>/api/items/20266
+```
+
+Example Response
+```json
+{
+    "id": 20266,
+    "name": "Accursed ashes",
+    "description": "A heap of ashes from a demon footsoldier. Scatter them for Prayer XP or use them to create incense sticks.",
+    "type": "Prayer materials",
+    "icon": "20266_icon.gif",
+    "iconLarge": "20266_icon_large.gif",
+    "wikiUrl": "https://runescape.wiki/w/Accursed_ashes",
+    "members": false
+}
+```
+
+#### Item Search
+
+This endpoint returns the information about a collection of items containing
+the search query, with optional query parameters to handle paging 
+(default page=0, pageSize=20)
+
+Example Endpoint
+
+``` 
+<api_endpoint>/api/items/search/ash?pageNumber=0&pageSize=2
+```
+
+Example Response
+```json
+{
+    "items": [
+        {
+            "id": 20266,
+            "name": "Accursed ashes",
+            "description": "A heap of ashes from a demon footsoldier. Scatter them for Prayer XP or use them to create incense sticks.",
+            "type": "Prayer materials",
+            "icon": "20266_icon.gif",
+            "iconLarge": "20266_icon_large.gif",
+            "wikiUrl": "https://runescape.wiki/w/Accursed_ashes",
+            "members": false
+        },
+        {
+            "id": 592,
+            "name": "Ashes",
+            "description": "A heap of ashes.",
+            "type": "Herblore materials",
+            "icon": "592_icon.gif",
+            "iconLarge": "592_icon_large.gif",
+            "wikiUrl": "https://runescape.wiki/w/Ashes",
+            "members": false
+        }
+    ],
+    "query": "ash",
+    "pageNumber": 0,
+    "pageSize": 2
+}
+```

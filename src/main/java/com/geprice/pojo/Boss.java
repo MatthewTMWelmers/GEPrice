@@ -3,8 +3,6 @@ package com.geprice.pojo;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.Instant;
-
 @Entity
 @Getter
 @Builder(toBuilder = true)
@@ -26,7 +24,4 @@ public class Boss {
 
     @Column(name = "icon")
     private String icon;
-
-    @Column(name = "created_at")
-    private Instant createdAt;
 }
