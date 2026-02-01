@@ -61,17 +61,16 @@ This endpoint returns the information about a specific boss
 Example Endpoint
 
 ```
-GET <api_endpoint>/api/bosses/1
+GET <api_endpoint>/api/bosses/27795
 ```
 
 Example Response
 ```json
 {
-    "id": 1,
+    "id": 27795,
     "name": "Arch-Glacor",
     "wikiUrl": "https://runescape.wiki/w/Arch-Glacor",
-    "icon": "Arch-Glacor.png",
-    "createdAt": "2026-02-01T20:46:17.895664100Z"
+    "icon": "https://runescape.wiki/w/File:Arch-Glacor.png"
 }
 ```
 
@@ -151,5 +150,42 @@ Example Response
     "query": "ash",
     "pageNumber": 0,
     "pageSize": 2
+}
+```
+
+```
+http://localhost:8080/api/items/boss/27795
+```
+
+```json
+{
+    "boss": {
+        "id": 27795,
+        "name": "Arch-Glacor",
+        "wikiUrl": "https://runescape.wiki/w/Arch-Glacor",
+        "icon": "https://runescape.wiki/w/File:Arch-Glacor.png"
+    },
+    "items": [
+        {
+            "id": 52115,
+            "name": "Scripture of Wen",
+            "description": "A collection of manuscripts detailing as much as is known about the Elder God, Wen.",
+            "type": "Miscellaneous",
+            "icon": "https://secure.runescape.com/m=itemdb_rs/1769426190227_obj_sprite.gif?id=52115",
+            "iconLarge": "https://secure.runescape.com/m=itemdb_rs/1769426190227_obj_big.gif?id=52115",
+            "wikiUrl": "https://runescape.wiki/w/Scripture_of_Wen",
+            "members": true
+        },
+        {
+            "id": 51817,
+            "name": "Manuscript of Wen",
+            "description": "Adds 45 minutes of charge to a Scripture of Wen.",
+            "type": "Miscellaneous",
+            "icon": "https://secure.runescape.com/m=itemdb_rs/1769426190227_obj_sprite.gif?id=51817",
+            "iconLarge": "https://secure.runescape.com/m=itemdb_rs/1769426190227_obj_big.gif?id=51817",
+            "wikiUrl": "https://runescape.wiki/w/Scripture_of_Wen",
+            "members": true
+        }
+    ]
 }
 ```

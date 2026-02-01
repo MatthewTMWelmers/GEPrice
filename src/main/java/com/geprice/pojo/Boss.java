@@ -5,7 +5,7 @@ import lombok.*;
 
 @Entity
 @Getter
-@Builder(toBuilder = true)
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "boss")
