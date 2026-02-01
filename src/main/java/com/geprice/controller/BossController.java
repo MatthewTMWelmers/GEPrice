@@ -30,7 +30,16 @@ public class BossController {
 
     @GetMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
     public String getBoss(@PathVariable String id, HttpServletResponse response) {
-        Optional<Boss> boss = bossRepo.findById(Integer.parseInt(id));
+        int bossId;
+        try {
+            bossId = Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            log.warn("Invalid boss id format: {}", id);
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return Util.toJson(GEPriceError.builder().error("Boss not found").build());
+        }
+
+        Optional<Boss> boss = bossRepo.findById(bossId);
         if(boss.isPresent()) {
             log.debug("Boss found: {}", boss.get().getName());
             return Util.toJson(boss.get());
