@@ -179,8 +179,8 @@ Example Response
             "name": "Scripture of Wen",
             "description": "A collection of manuscripts detailing as much as is known about the Elder God, Wen.",
             "type": "Miscellaneous",
-            "icon": "https://secure.runescape.com/m=itemdb_rs/1769426190227_obj_sprite.gif?id=52115",
-            "iconLarge": "https://secure.runescape.com/m=itemdb_rs/1769426190227_obj_big.gif?id=52115",
+            "icon": "52115_icon.gif",
+            "iconLarge": "52115_icon_large.gif",
             "wikiUrl": "https://runescape.wiki/w/Scripture_of_Wen",
             "members": true
         },
@@ -189,8 +189,8 @@ Example Response
             "name": "Manuscript of Wen",
             "description": "Adds 45 minutes of charge to a Scripture of Wen.",
             "type": "Miscellaneous",
-            "icon": "https://secure.runescape.com/m=itemdb_rs/1769426190227_obj_sprite.gif?id=51817",
-            "iconLarge": "https://secure.runescape.com/m=itemdb_rs/1769426190227_obj_big.gif?id=51817",
+            "icon": "51817_icon.gif",
+            "iconLarge": "51817_icon_large.gif",
             "wikiUrl": "https://runescape.wiki/w/Scripture_of_Wen",
             "members": true
         }
