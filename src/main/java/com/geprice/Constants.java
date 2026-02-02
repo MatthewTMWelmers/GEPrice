@@ -6,5 +6,6 @@ public class Constants {
     public static final String ITEM_NOT_FOUND = "Item not found";
     public static final String SUBMISSION_NOT_FOUND = "Submission not found";
 
-    private Constants() {   }
+    private Constants() {
+    }
 }

@@ -28,7 +28,7 @@ public class Submission {
     @Enumerated(EnumType.STRING)
     @NonNull
     @Column(name = "status")
-    private  Status status;
+    private Status status;
 
     @Column(name = "value")
     private long value;

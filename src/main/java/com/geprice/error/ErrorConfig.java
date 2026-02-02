@@ -16,7 +16,7 @@ public class ErrorConfig {
     @ExceptionHandler(GEPrice404Error.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public Map<String, Object> handle404(GEPrice404Error message) {
-        Map<String, Object> response =  new HashMap<>();
+        Map<String, Object> response = new HashMap<>();
         response.put("error", message.getMessage());
         return response;
     }
@@ -24,7 +24,7 @@ public class ErrorConfig {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public Map<String, Object> handle400() {
-        Map<String, Object> response =  new HashMap<>();
+        Map<String, Object> response = new HashMap<>();
         response.put("error", "Invalid request");
         return response;
     }
@@ -32,7 +32,7 @@ public class ErrorConfig {
     @ExceptionHandler(NoHandlerFoundException.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public Map<String, Object> handle(NoHandlerFoundException message) {
-        Map<String, Object> response =  new HashMap<>();
+        Map<String, Object> response = new HashMap<>();
         response.put("error", message.getMessage());
         return response;
     }

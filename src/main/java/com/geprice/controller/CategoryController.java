@@ -32,7 +32,7 @@ public class CategoryController {
         int categoryId = Util.validateIntegerParameter(id, Constants.CATEGORY_NOT_FOUND);
 
         Optional<Category> category = categoryRepo.findById(categoryId);
-        if(category.isPresent()) {
+        if (category.isPresent()) {
             log.debug("Category found: {}", category.get().getName());
             return category.get();
         } else {
@@ -42,8 +42,7 @@ public class CategoryController {
     }
 
     @GetMapping("/all")
-    public List<Category> getAll()
-    {
+    public List<Category> getAll() {
         return categoryRepo.findAll();
     }
 }

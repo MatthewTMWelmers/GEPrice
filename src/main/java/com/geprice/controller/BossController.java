@@ -32,7 +32,7 @@ public class BossController {
         int bossId = Util.validateIntegerParameter(id, Constants.BOSS_NOT_FOUND);
 
         Optional<Boss> boss = bossRepo.findById(bossId);
-        if(boss.isPresent()) {
+        if (boss.isPresent()) {
             log.debug("Boss found: {}", boss.get().getName());
             return boss.get();
         } else {
@@ -42,8 +42,7 @@ public class BossController {
     }
 
     @GetMapping("/all")
-    public List<Boss> getAll()
-    {
+    public List<Boss> getAll() {
         return bossRepo.findAll();
     }
 }

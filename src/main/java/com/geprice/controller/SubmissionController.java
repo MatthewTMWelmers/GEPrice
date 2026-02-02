@@ -24,10 +24,9 @@ import java.util.Optional;
 @RequestMapping("/api/submissions")
 public class SubmissionController {
 
+    private static final Logger log = LoggerFactory.getLogger(SubmissionController.class);
     private final SubmissionRepo submissionRepo;
     private final ItemRepo itemRepo;
-
-    private static final Logger log = LoggerFactory.getLogger(SubmissionController.class);
 
     public SubmissionController(SubmissionRepo submissionRepo, ItemRepo itemRepo) {
         this.submissionRepo = submissionRepo;
@@ -63,7 +62,7 @@ public class SubmissionController {
     public SubmissionsPaged getPending(@RequestParam(value = "pageSize", required = false, defaultValue = "20") String pageSize,
                                        @RequestParam(value = "pageNumber", required = false, defaultValue = "0") String pageNumber) {
         List<Submission> submissions = submissionRepo.findAllByApproved(false, PageRequest.of(Integer.parseInt(pageNumber),
-                                                                                              Integer.parseInt(pageSize)));
+                Integer.parseInt(pageSize)));
         return SubmissionsPaged.builder()
                 .submissions(submissions)
                 .pageNumber(Integer.parseInt(pageNumber))
@@ -98,7 +97,7 @@ public class SubmissionController {
     @PatchMapping("/{id}/approve")
     public Submission approve(@PathVariable String id) {
         Optional<Submission> submission = submissionRepo.findById(Long.parseLong(id));
-        if(submission.isPresent()) {
+        if (submission.isPresent()) {
             return submissionRepo.save(submission.get().toBuilder()
                     .approved(true)
                     .updatedAt(Instant.now()).build());
@@ -112,7 +111,7 @@ public class SubmissionController {
     public Submission flag(@PathVariable String id) {
         Optional<Submission> submission = submissionRepo.findById(Long.parseLong(id));
 
-        if(submission.isPresent()) {
+        if (submission.isPresent()) {
             return submissionRepo.save(submission.get().toBuilder()
                     .flagged(true)
                     .updatedAt(Instant.now()).build());
@@ -126,7 +125,7 @@ public class SubmissionController {
     public Submission unflag(@PathVariable String id) {
         Optional<Submission> submission = submissionRepo.findById(Long.parseLong(id));
 
-        if(submission.isPresent()) {
+        if (submission.isPresent()) {
             return submissionRepo.save(submission.get().toBuilder()
                     .flagged(false)
                     .updatedAt(Instant.now()).build());
@@ -140,7 +139,7 @@ public class SubmissionController {
     public Submission delete(@PathVariable String id) {
         Optional<Submission> submission = submissionRepo.findById(Long.parseLong(id));
 
-        if(submission.isPresent()) {
+        if (submission.isPresent()) {
             return submissionRepo.save(submission.get().toBuilder()
                     .listed(false)
                     .updatedAt(Instant.now()).build());

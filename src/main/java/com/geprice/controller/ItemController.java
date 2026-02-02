@@ -3,22 +3,14 @@ package com.geprice.controller;
 import com.geprice.Constants;
 import com.geprice.error.GEPrice404Error;
 import com.geprice.pojo.*;
-import com.geprice.repository.BossItemRepo;
-import com.geprice.repository.BossRepo;
-import com.geprice.repository.CategoryItemRepo;
-import com.geprice.repository.CategoryRepo;
-import com.geprice.repository.ItemRepo;
+import com.geprice.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/items")
@@ -50,7 +42,7 @@ public class ItemController {
     @GetMapping("/{id}")
     public Item getItem(@PathVariable String id) {
         Optional<Item> item = itemRepo.findById(Integer.parseInt(id));
-        if(item.isPresent()) {
+        if (item.isPresent()) {
             log.debug("Item {} with id {} found", item.get().getName(), id);
             return item.get();
         } else {
@@ -63,36 +55,36 @@ public class ItemController {
     public ItemsPaged getItems(@PathVariable String query,
                                @RequestParam(value = "pageSize", required = false, defaultValue = "20") String pageSize,
                                @RequestParam(value = "pageNumber", required = false, defaultValue = "0") String pageNumber) {
-       List<Item> items = itemRepo.findAllByNameUpperContaining(query.toUpperCase(Locale.UK), PageRequest.of(Integer.parseInt(pageNumber),
-                                                                                                        Integer.parseInt(pageSize),
-                                                                                                        Sort.by("name").ascending()));
-       return ItemsPaged.builder()
-               .items(items)
-               .query(query)
-               .pageNumber(Integer.parseInt(pageNumber))
-               .pageSize(Integer.parseInt(pageSize))
-               .build();
+        List<Item> items = itemRepo.findAllByNameUpperContaining(query.toUpperCase(Locale.UK), PageRequest.of(Integer.parseInt(pageNumber),
+                Integer.parseInt(pageSize),
+                Sort.by("name").ascending()));
+        return ItemsPaged.builder()
+                .items(items)
+                .query(query)
+                .pageNumber(Integer.parseInt(pageNumber))
+                .pageSize(Integer.parseInt(pageSize))
+                .build();
     }
 
     @GetMapping("/boss/{bossId}")
     public BossItems getBoss(@PathVariable String bossId) {
         Optional<Boss> boss = bossRepo.findById(Integer.parseInt(bossId));
-        if(boss.isEmpty()) {
+        if (boss.isEmpty()) {
             log.error("Boss {} not found", bossId);
-            throw new  GEPrice404Error("Boss not found");
+            throw new GEPrice404Error("Boss not found");
         }
         BossItems.BossItemsBuilder bossItem = BossItems.builder();
         bossItem.boss(boss.get());
 
         List<BossItem> bossDropsRaw = bossItemRepo.findAllByBossId(Integer.parseInt(bossId));
-        if(bossDropsRaw.isEmpty()) {
+        if (bossDropsRaw.isEmpty()) {
             log.warn("No items found for boss {}", bossId);
         }
 
         List<Item> bossDropItems = new ArrayList<>();
-        for(BossItem bossDrop : bossDropsRaw) {
+        for (BossItem bossDrop : bossDropsRaw) {
             Optional<Item> item = itemRepo.findById(bossDrop.getItemId());
-            if(item.isPresent()) {
+            if (item.isPresent()) {
                 log.debug("Item {} with id {} found for boss {}", item.get().getName(), bossDrop.getItemId(), bossDrop.getBossId());
                 bossDropItems.add(item.get());
             } else {
@@ -107,7 +99,7 @@ public class ItemController {
     @GetMapping("/category/{categoryId}")
     public CategoryItems getCategory(@PathVariable String categoryId) {
         Optional<Category> category = categoryRepo.findById(Integer.parseInt(categoryId));
-        if(category.isEmpty()) {
+        if (category.isEmpty()) {
             log.error("Category {} not found", categoryId);
             throw new GEPrice404Error("Category not found");
         }
@@ -115,14 +107,14 @@ public class ItemController {
         categoryItems.category(category.get());
 
         List<CategoryItem> categoryItemsRaw = categoryItemRepo.findAllByCategoryId(Integer.parseInt(categoryId));
-        if(categoryItemsRaw.isEmpty()) {
+        if (categoryItemsRaw.isEmpty()) {
             log.warn("No items found for category {}", categoryId);
         }
 
         List<Item> categoryDropItems = new ArrayList<>();
-        for(CategoryItem categoryItem : categoryItemsRaw) {
+        for (CategoryItem categoryItem : categoryItemsRaw) {
             Optional<Item> item = itemRepo.findById(categoryItem.getItemId());
-            if(item.isPresent()) {
+            if (item.isPresent()) {
                 log.debug("Item {} with id {} found for category {}", item.get().getName(), categoryItem.getItemId(), categoryId);
                 categoryDropItems.add(item.get());
             } else {
