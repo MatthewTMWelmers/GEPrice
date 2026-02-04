@@ -63,4 +63,10 @@ public class Submission {
 
     @Column(name = "reviewed_at")
     private Instant reviewedAt;
+
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "photo_message_id")
+    private String photoMessageId;
 }

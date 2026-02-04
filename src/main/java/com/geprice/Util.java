@@ -1,15 +1,22 @@
 package com.geprice;
 
 import com.geprice.error.GEPrice404Error;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.geprice.pojo.PreviousWeeklyAverage;
+import com.geprice.pojo.WeeklyAverage;
+import com.geprice.repository.PreviousWeeklyAverageRepo;
+import com.geprice.repository.WeeklyAverageRepo;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
+@Service
 public class Util {
 
-    private static final Logger log = LoggerFactory.getLogger(Util.class);
+    private static ApplicationContext context;
 
-    public static void logMissingSubmission(String id) {
-        log.warn("Submission with id {} not found", id);
+    public Util(ApplicationContext context) {
+        Util.context = context;
     }
 
     public static int validateIntegerParameter(String integer, String failMessage) {
@@ -18,5 +25,44 @@ public class Util {
         } catch (NumberFormatException e) {
             throw new GEPrice404Error(failMessage);
         }
+    }
+
+    public static String getWeeklyAveragePercentChange(int itemId) {
+        double average = getWeeklyAverage(itemId);
+        double previousAverage = getPreviousWeeklyAverage(itemId);
+        return getPercentChange(average, previousAverage);
+    }
+
+    public static String getPercentChange(double current, double previous) {
+        if (current == 0 && previous == 0) {
+            return "+0.00%";
+        }
+        if (current == 0) {
+            return "-100.00%";
+        }
+        if (previous == 0) {
+            return "+inf%";
+        } else {
+            return String.format("%+.2f%%", (current - previous) / previous * 100.0);
+        }
+    }
+
+
+    public static double getWeeklyAverageChange(int itemId) {
+        double average = getWeeklyAverage(itemId);
+        double previousAverage = getPreviousWeeklyAverage(itemId);
+        return average - previousAverage;
+    }
+
+    public static double getWeeklyAverage(int itemId) {
+        WeeklyAverageRepo repo = context.getBean(WeeklyAverageRepo.class);
+        Optional<WeeklyAverage> avg = repo.findById(itemId);
+        return avg.map(WeeklyAverage::getAverage).orElse(0.0);
+    }
+
+    public static double getPreviousWeeklyAverage(int itemId) {
+        PreviousWeeklyAverageRepo repo = context.getBean(PreviousWeeklyAverageRepo.class);
+        Optional<PreviousWeeklyAverage> avg = repo.findById(itemId);
+        return avg.map(PreviousWeeklyAverage::getAverage).orElse(0.0);
     }
 }

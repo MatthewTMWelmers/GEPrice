@@ -1,6 +1,7 @@
 package com.geprice.controller;
 
 import com.geprice.Constants;
+import com.geprice.Util;
 import com.geprice.error.GEPrice404Error;
 import com.geprice.pojo.*;
 import com.geprice.repository.*;
@@ -23,20 +24,29 @@ public class ItemController {
     private final BossItemRepo bossItemRepo;
     private final CategoryRepo categoryRepo;
     private final CategoryItemRepo categoryItemRepo;
+    private final ItemDetailRepo itemDetailRepo;
 
-    ItemController(ItemRepo itemRepo, BossRepo bossRepo, BossItemRepo bossItemRepo, CategoryRepo categoryRepo, CategoryItemRepo categoryItemRepo) {
+    ItemController(ItemRepo itemRepo, BossRepo bossRepo, BossItemRepo bossItemRepo, CategoryRepo categoryRepo, CategoryItemRepo categoryItemRepo, ItemDetailRepo itemDetailRepo) {
         this.itemRepo = itemRepo;
         this.bossRepo = bossRepo;
         this.bossItemRepo = bossItemRepo;
         this.categoryRepo = categoryRepo;
         this.categoryItemRepo = categoryItemRepo;
+        this.itemDetailRepo = itemDetailRepo;
     }
 
     @GetMapping("/all")
     public List<Map<String, Object>> getAll() {
-        return itemRepo.findAll().stream()
-                .<Map<String, Object>>map(item -> Map.of("id", item.getId(), "name", item.getName()))
-                .toList();
+        return itemDetailRepo.findAll().stream()
+                .<Map<String, Object>>map(item -> Map.of(
+                        "id", item.getId(),
+                        "name", item.getName(),
+                        "categoryId", item.getCategoryId(),
+                        "currentWeekAverage", item.getCurrentWeekAverage(),
+                        "previousWeekAverage", item.getPreviousWeekAverage(),
+                        "weeklyChange", item.getCurrentWeekAverage() - item.getPreviousWeekAverage(),
+                        "weeklyChangePercent", Util.getPercentChange(item.getCurrentWeekAverage(), item.getPreviousWeekAverage()))
+                ).toList();
     }
 
     @GetMapping("/{id}")

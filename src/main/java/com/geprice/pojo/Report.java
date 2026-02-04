@@ -20,7 +20,7 @@ public class Report {
         report.date = submission.getCreatedAt();
         report.price = submission.getValue();
         report.transactionType = submission.getTransactionType();
-        report.reporter = submission.getUserId();
+        report.reporter = submission.getUsername();
         return report;
     }
 }

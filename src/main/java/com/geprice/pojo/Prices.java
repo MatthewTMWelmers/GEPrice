@@ -12,9 +12,10 @@ import java.util.List;
 public class Prices {
 
     private int itemId;
+    private String itemName;
     private Long lastBuy;
     private Long lastSell;
-    private Long weekChange;
+    private double weekChange;
     private String weekChangePercentage;
     private String timeframe;
 
