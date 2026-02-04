@@ -32,7 +32,8 @@ public class PricesController {
 
     @GetMapping("/{itemId}")
     public Prices getRecent(@PathVariable String itemId,
-                            @RequestParam(value = "numDays", required = false, defaultValue = "30") String numDays) {
+                            @RequestParam(value = "numDays", required = false, defaultValue = "30") String numDays,
+                            @RequestParam(value = "subId", required = false, defaultValue = "false") String includeSubmissionId) {
         int item = Util.validateIntegerParameter(itemId, Constants.ITEM_NOT_FOUND);
         if (numDays == null || !List.of("30", "90", "all").contains(numDays)) {
             throw new GEPrice400Error("Invalid number of days [30 / 90 / all]");
@@ -46,7 +47,7 @@ public class PricesController {
         List<Report> reports = submissionRepo.findAllByItemIdAndListedAndReviewStatusNotOrderByCreatedAtDesc(item, true, "denied")
                 .stream().filter(s -> "all".equals(numDays) ||
                         s.getCreatedAt().isAfter(Instant.now(Clock.systemUTC()).minus(Integer.parseInt(numDays), ChronoUnit.DAYS)))
-                .map(Report::fromSubmission).toList();
+                .map(s -> Report.fromSubmission(s, Boolean.parseBoolean(includeSubmissionId))).toList();
 
         Optional<Report> lastBuyReport = reports.stream().filter(r -> List.of("buy", "instant_buy").contains(r.getTransactionType())).findFirst();
         Optional<Report> lastSellReport = reports.stream().filter(r -> List.of("sell", "instant_sell").contains(r.getTransactionType())).findFirst();
