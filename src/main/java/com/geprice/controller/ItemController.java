@@ -36,16 +36,17 @@ public class ItemController {
     }
 
     @GetMapping("/all")
-    public List<Map<String, Object>> getAll() {
+    public List<ItemSummaries> getAll() {
         return itemDetailRepo.findAll().stream()
-                .<Map<String, Object>>map(item -> Map.of(
-                        "id", item.getId(),
-                        "name", item.getName(),
-                        "categoryId", item.getCategoryId(),
-                        "currentWeekAverage", item.getCurrentWeekAverage(),
-                        "previousWeekAverage", item.getPreviousWeekAverage(),
-                        "weeklyChange", item.getCurrentWeekAverage() - item.getPreviousWeekAverage(),
-                        "weeklyChangePercent", Util.getPercentChange(item.getCurrentWeekAverage(), item.getPreviousWeekAverage()))
+                .map(item -> ItemSummaries.builder()
+                                .itemId(item.getId())
+                                .name(item.getName())
+                                .categoryId(item.getCategoryId())
+                                .currentWeekAverage(item.getCurrentWeekAverage())
+                                .previousWeekAverage(item.getPreviousWeekAverage())
+                                .weeklyChange(item.getCurrentWeekAverage() - item.getPreviousWeekAverage())
+                                .weeklyChangePercent(Util.getPercentChange(item.getCurrentWeekAverage(), item.getPreviousWeekAverage()))
+                        .build()
                 ).toList();
     }
 
