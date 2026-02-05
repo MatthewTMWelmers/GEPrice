@@ -39,7 +39,7 @@ public class ItemController {
     public List<ItemSummaries> getAll() {
         return itemDetailRepo.findAll().stream()
                 .map(item -> ItemSummaries.builder()
-                                .itemId(item.getId())
+                                .id(item.getId())
                                 .name(item.getName())
                                 .categoryId(item.getCategoryId())
                                 .currentWeekAverage(item.getCurrentWeekAverage())
