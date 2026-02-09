@@ -95,4 +95,9 @@ public class PricesController {
                 .reports(reports.subList(0, pageSize < 0 || pageSize > reports.size() ? reports.size() : pageSize))
                 .build();
     }
+
+    @GetMapping("/deleted")
+    public List<Long> getDeletedPrices() {
+        return submissionRepo.findDeletedSubmissionIds();
+    }
 }

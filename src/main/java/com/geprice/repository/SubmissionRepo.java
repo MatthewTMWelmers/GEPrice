@@ -51,4 +51,12 @@ public interface SubmissionRepo extends JpaRepository<@NonNull Submission, @NonN
             "and s.reviewStatus != 'denied' " +
             "and (?1 < 0 or s.id < ?1)")
     long findListedOrderByIdDescCount(long submissionId);
+
+    @Query("select s.id " +
+            "from Submission s " +
+            "where s.updatedAt < (current timestamp - 1 hour) " +
+            "and (s.listed = false " +
+            "or s.reviewStatus = 'denied') " +
+            "order by s.id asc")
+    List<Long> findDeletedSubmissionIds();
 }
