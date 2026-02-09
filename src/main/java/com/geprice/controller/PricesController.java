@@ -14,7 +14,6 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.IntStream;
 
 @RestController
 @ControllerAdvice
@@ -74,18 +73,18 @@ public class PricesController {
 
         List<Submission> submissions;
         if (newestFirst) {
-            submissions = submissionRepo.findAllByListedAndReviewStatusNotOrderByCreatedAtDesc(true, "denied");
+            submissions = submissionRepo.findAllByListedAndReviewStatusNotOrderByIdDesc(true, "denied")
+                    .stream()
+                    .dropWhile(s -> afterSubmission != -1 && s.getId() >= afterSubmission)
+                    .toList();
         } else {
-            submissions = submissionRepo.findAllByListedAndReviewStatusNotOrderByCreatedAtAsc(true, "denied");
+            submissions = submissionRepo.findAllByListedAndReviewStatusNotOrderByIdAsc(true, "denied")
+                    .stream()
+                    .dropWhile(s -> afterSubmission != -1 && s.getId() <= afterSubmission)
+                    .toList();
         }
 
-        int idx = IntStream.range(0, submissions.size())
-                .filter(i -> submissions.get(i).getId() == afterSubmission)
-                .findFirst()
-                .orElse(-1);
-
         List<Report> reports = submissions.stream()
-                .skip(idx + 1)
                 .map(s -> Report.fromSubmission(s, true))
                 .toList();
 

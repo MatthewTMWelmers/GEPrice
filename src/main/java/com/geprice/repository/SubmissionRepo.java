@@ -11,7 +11,7 @@ import java.util.List;
 public interface SubmissionRepo extends JpaRepository<@NonNull Submission, @NonNull Long> {
     List<Submission> findAllByItemIdAndListedAndReviewStatusNotOrderByCreatedAtDesc(int itemId, boolean listed, String reviewStatusNot);
 
-    List<Submission> findAllByListedAndReviewStatusNotOrderByCreatedAtAsc(boolean listed, String reviewStatusNot);
+    List<Submission> findAllByListedAndReviewStatusNotOrderByIdAsc(boolean listed, String reviewStatusNot);
 
-    List<Submission> findAllByListedAndReviewStatusNotOrderByCreatedAtDesc(boolean listed, String reviewStatusNot);
+    List<Submission> findAllByListedAndReviewStatusNotOrderByIdDesc(boolean listed, String reviewStatusNot);
 }

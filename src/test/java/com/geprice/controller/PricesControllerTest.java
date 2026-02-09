@@ -47,8 +47,8 @@ public class PricesControllerTest {
 
     @BeforeEach
     public void beforeEach() {
-        Mockito.lenient().when(submissionRepo.findAllByListedAndReviewStatusNotOrderByCreatedAtAsc(anyBoolean(), anyString())).thenReturn(submissions);
-        Mockito.lenient().when(submissionRepo.findAllByListedAndReviewStatusNotOrderByCreatedAtDesc(anyBoolean(), anyString())).thenReturn(submissions.reversed());
+        Mockito.lenient().when(submissionRepo.findAllByListedAndReviewStatusNotOrderByIdAsc(anyBoolean(), anyString())).thenReturn(submissions);
+        Mockito.lenient().when(submissionRepo.findAllByListedAndReviewStatusNotOrderByIdDesc(anyBoolean(), anyString())).thenReturn(submissions.reversed());
     }
 
     @Test
@@ -98,6 +98,29 @@ public class PricesControllerTest {
         assertEquals(1, reports.getReports().get(1).getSubmissionId(), "Incorrect submissionId returned for submission number 2");
         assertEquals(-1, reports.getPageSize(), "Incorrect pageSize returned");
         assertEquals(3, reports.getAfterSubmission(), "Incorrect afterSubmission returned");
+        assertTrue(reports.isNewestFirst(), "Incorrect newestFirst returned");
+    }
+
+    @Test
+    public void getAllPricesPagedWithMissingAfterSubmissionBig() {
+        ReportsPaged reports = pricesController.getAllPricesPaged(DEFAULT_PAGE_SIZE, "4", DEFAULT_NEW_SUBMISSION);
+        assertEquals(3, reports.getTotalItems(), "Incorrect totalItems returned");
+        assertEquals(3, reports.getReports().size(), "Incorrect report count returned");
+        assertEquals(3, reports.getReports().get(0).getSubmissionId(), "Incorrect submissionId returned for submission number 0");
+        assertEquals(2, reports.getReports().get(1).getSubmissionId(), "Incorrect submissionId returned for submission number 1");
+        assertEquals(1, reports.getReports().get(2).getSubmissionId(), "Incorrect submissionId returned for submission number 2");
+        assertEquals(-1, reports.getPageSize(), "Incorrect pageSize returned");
+        assertEquals(4, reports.getAfterSubmission(), "Incorrect afterSubmission returned");
+        assertTrue(reports.isNewestFirst(), "Incorrect newestFirst returned");
+    }
+
+    @Test
+    public void getAllPricesPagedWithMissingAfterSubmissionSmall() {
+        ReportsPaged reports = pricesController.getAllPricesPaged(DEFAULT_PAGE_SIZE, "0", DEFAULT_NEW_SUBMISSION);
+        assertEquals(0, reports.getTotalItems(), "Incorrect totalItems returned");
+        assertEquals(0, reports.getReports().size(), "Incorrect report count returned");
+        assertEquals(-1, reports.getPageSize(), "Incorrect pageSize returned");
+        assertEquals(0, reports.getAfterSubmission(), "Incorrect afterSubmission returned");
         assertTrue(reports.isNewestFirst(), "Incorrect newestFirst returned");
     }
 
